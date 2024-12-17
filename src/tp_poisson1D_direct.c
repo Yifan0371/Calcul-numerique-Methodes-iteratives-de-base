@@ -15,15 +15,23 @@ int main(int argc, char *argv[])
   struct timespec start, end; // For time measurement
   double elapsed_time;        // Time storage variable
   int ierr, info = 1;
+
+
   int nbpoints, la;           // Number of points and discretized size
   int ku, kl, kv, lab;        // Matrix band parameters
   int *ipiv;                  // Pivot indices for LU factorization
   int NRHS = 1;               // Number of RHS vectors
   int IMPLEM = 0;             // Implementation choice
+
+
+
+
   double T0 = -5.0, T1 = 5.0; // Boundary conditions
   double *RHS, *EX_SOL, *X;   // RHS, exact solution, grid points
   double *AB;                 // Band matrix
   double relres;              // Relative forward error
+
+
 
   // Handle optional argument to choose the implementation method
   if (argc == 2) {
