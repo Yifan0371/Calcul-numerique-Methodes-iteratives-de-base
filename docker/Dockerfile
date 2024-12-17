@@ -26,4 +26,5 @@ RUN mkdir -p bin && \
 
 # Define the default command to run when the container starts
 # This will execute the "make run_tpPoisson1D_direct" target from the Makefile
-CMD ["make", "run_tpPoisson1D_direct"]
+CMD ["bash", "-c", "make run_testenv && make run_tpPoisson1D_direct"]
+
