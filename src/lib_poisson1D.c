@@ -68,14 +68,58 @@ void set_grid_points_1D(double* x, int* la){
   }
 }
 
+
 double relative_forward_error(double* x, double* y, int* la){
-  return 0;
+  double norm_diff = 0.0;
+  double norm_y = 0.0;
+  
+  // Calculate ||x - y||
+  for(int i = 0; i < *la; i++){
+      norm_diff += (x[i] - y[i]) * (x[i] - y[i]);
+  }
+  norm_diff = sqrt(norm_diff);
+  
+  // Calculate ||y||
+  for(int i = 0; i < *la; i++){
+      norm_y += y[i] * y[i];
+  }
+  norm_y = sqrt(norm_y);
+  
+  // Return ||x - y|| / ||y||
+  return norm_diff / norm_y;
 }
 
 int indexABCol(int i, int j, int *lab){
   return j*(*lab)+i;
 }
 
-int dgbtrftridiag(int *la, int*n, int *kl, int *ku, double *AB, int *lab, int *ipiv, int *info){
+int dgbtrftridiag(int *la, int *n, int *kl, int *ku, double *AB, int *lab, int *ipiv, int *info){
+  // Implementation of LU factorization for tridiagonal matrix
+  int i, j;
+  double m;
+  
+  // Check input parameters
+  if(*kl != 1 || *ku != 1) {
+      *info = -1;
+      return *info;
+  }
+  
+  // Main loop for LU factorization
+  for(i = 0; i < *la-1; i++) {
+      // Check for zero pivot
+      if(fabs(AB[*lab * i + 1]) < 1e-10) {
+          *info = i+1;
+          return *info;
+      }
+      
+      // Compute multiplier
+      m = AB[*lab * i + 2] / AB[*lab * i + 1];
+      AB[*lab * i + 2] = m;
+      
+      // Update next diagonal element
+      AB[*lab * (i+1) + 1] = AB[*lab * (i+1) + 1] - m * AB[*lab * i + 0];
+  }
+  
+  *info = 0;
   return *info;
 }

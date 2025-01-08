@@ -1,5 +1,5 @@
 # Use the official Ubuntu 20.04 as the base image
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 # Set non-interactive mode for APT to prevent prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive
